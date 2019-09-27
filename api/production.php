@@ -15,6 +15,9 @@ if (!defined('CONFIGURATION_ROOT')) {
 if (!defined('DATA_SOURCE')) {
     define('DATA_SOURCE', CONFIGURATION_ROOT . 'production.php');
 }
+if (!defined('SALT_SOURCE')) {
+    define('SALT_SOURCE', CONFIGURATION_ROOT . 'salt.php');
+}
 if (!defined('DATA_SOURCE_KEY')) {
     define('DATA_SOURCE_KEY', 'dataSource');
 }
@@ -25,6 +28,7 @@ If (!defined('SQLITE')) {
     define('SQLITE', 'sqlite:');
 }
 $dataSource = require(DATA_SOURCE);
+require(SALT_SOURCE);
 
 $configuration['displayErrorDetails'] = true;
 $configuration['addContentLengthHeader'] = false;

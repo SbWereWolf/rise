@@ -2,9 +2,11 @@
 
 namespace Environment\Setup;
 
-use Environment\Storage\Router;
 use Exception;
 use Slim\App;
+use \Environment\Storage;
+use \Environment\User;
+use \Environment\Session;
 
 class Setup
 {
@@ -23,7 +25,9 @@ class Setup
     {
         $app = $this->handler;
 
-        $app = (new Router($app))->settingUpRoutes()->getHandler();
+        $app = (new Storage\Router($app))->settingUpRoutes()->getHandler();
+        $app = (new User\Router($app))->settingUpRoutes()->getHandler();
+        $app = (new Session\Router($app))->settingUpRoutes()->getHandler();
 
         return $app;
     }

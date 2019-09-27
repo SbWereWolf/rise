@@ -25,8 +25,39 @@ create table exchange
 
 create unique index exchange_date_source_target_uindex
     on exchange (date, source, target);
+
+create table user
+(
+    id INTEGER
+        constraint user_pk
+            primary key autoincrement,
+    login NVARCHAR not null,
+    hash NVARCHAR not null
+);
+
+create unique index user_login_uindex
+    on user (login);
+
+create table session
+(
+    id INTEGER
+        constraint session_pk
+            primary key autoincrement,
+    user_id int not null
+        constraint session_user_id_fk
+            references user,
+    session NVARCHAR not null
+);
+
+create unique index session_session_uindex
+    on session (session);
+
+create index session_user_id_session_index
+    on session (user_id, session);
     ";
     const UNMOUNT_SQLITE = '
+DROP TABLE IF EXISTS session;
+DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS exchange;
 
 VACUUM;

@@ -2,3 +2,5 @@
 vendor/**
 .htaccess
 configuration/database.sqlite
+configuration/*.php
+-configuration/*.example
