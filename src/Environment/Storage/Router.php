@@ -16,14 +16,14 @@ class Router extends \Environment\Basis\Router
         $app = $this->getHandler();
         $dataSource = $this->getDataSource();
         $root = $this->root;
-        $app->post("$root/mount/", function (Request $request, Response $response, array $arguments)
+        $app->post("$root", function (Request $request, Response $response, array $arguments)
         use ($dataSource) {
             $response = (new Controller($request, $response, $arguments, $dataSource))
                 ->process();
 
             return $response;
         });
-        $app->delete("$root/dismount/", function (Request $request, Response $response, array $arguments)
+        $app->delete("$root", function (Request $request, Response $response, array $arguments)
         use ($dataSource) {
             $response = (new Controller($request, $response, $arguments, $dataSource))
                 ->process();
