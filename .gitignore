@@ -1,1 +1,4 @@
 .idea
+vendor/**
+.htaccess
+configuration/database.sqlite
