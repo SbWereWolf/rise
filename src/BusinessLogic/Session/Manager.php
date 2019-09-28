@@ -5,10 +5,12 @@ namespace BusinessLogic\Session;
 
 use BusinessLogic\User\Factory;
 use DataStorage\Basis\DataSource;
+use LanguageFeatures\ArrayParser;
 use PDO;
 
 class Manager
 {
+    const SESSION = 'session';
     private $credential = [];
     private $dataPath = null;
     /**
@@ -77,7 +79,7 @@ WHERE login=:login AND hash=:hash';
             $isSuccess = $command->bindValue(':session',
                 $session->getSession());
         }
-        if (!empty($command)) {
+        if ($isSuccess) {
             $isSuccess = $command->bindValue(':login',
                 $session->getUser()->getLogin());
         }
@@ -109,5 +111,44 @@ WHERE login=:login AND hash=:hash';
     public function getSession(): string
     {
         return $this->session;
+    }
+
+    public function check(): bool
+    {
+        $parser = new  ArrayParser($this->getCredential());
+        $session = $parser->getString(self::SESSION);;
+
+        $isSuccess = $this->isOpen($session);
+
+        return $isSuccess;
+    }
+
+    public function isOpen(string $session)
+    {
+        $dataSource = $this->getDataPath();
+        $db = new PDO(
+            $dataSource->getDsn(),
+            $dataSource->getUsername(),
+            $dataSource->getPasswd(),
+            $dataSource->getOptions());
+
+        $request = '
+SELECT NULL 
+FROM session
+WHERE session = :session';
+        $command = $db->prepare($request);
+        $isSuccess = !empty($command);
+        if ($isSuccess) {
+            $isSuccess = $command->bindValue(':session',
+                $session);
+        }
+        if ($isSuccess) {
+            $isSuccess = $command->execute() !== false;
+        }
+        if ($isSuccess) {
+            $isSuccess = count($command->fetchAll(PDO::FETCH_ASSOC)) === 1;
+        }
+
+        return $isSuccess;
     }
 }

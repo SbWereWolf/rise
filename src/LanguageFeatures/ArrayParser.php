@@ -5,24 +5,24 @@ namespace LanguageFeatures;
 
 class ArrayParser
 {
-    private $parameters = array();
+    private $data = array();
 
     public function __construct(array $parameters)
     {
-        $this->parameters = $parameters;
+        $this->data = $parameters;
     }
 
-    public function getInteger(string $field): int
+    public function getInteger(string $key): int
     {
 
-        $value = intval($this->safely($field));
+        $value = intval($this->safely($key));
         return $value;
     }
 
-    private function safely(string $key)
+    public function safely(string $key)
     {
 
-        $parameters = $this->parameters;
+        $parameters = $this->data;
         $isExists = array_key_exists($key, $parameters);
 
         $value = null;
@@ -32,17 +32,17 @@ class ArrayParser
         return $value;
     }
 
-    public function getFloat(string $field): float
+    public function getFloat(string $key): float
     {
 
-        $value = floatval($this->safely($field));
+        $value = floatval($this->safely($key));
         return $value;
     }
 
-    public function getString(string $field): string
+    public function getString(string $key): string
     {
 
-        $value = strval($this->safely($field));
+        $value = strval($this->safely($key));
         return $value;
     }
 

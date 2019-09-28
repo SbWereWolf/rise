@@ -19,7 +19,7 @@ create table exchange
             primary key autoincrement,
     date INTEGER NOT NULL,
     source NVARCHAR not null,
-    ratio DOUBLE PRECISION NOT NULL,
+    rate DOUBLE PRECISION NOT NULL,
     target NVARCHAR not null
 );
 
